@@ -17,3 +17,7 @@ On the same date the collector builds an address index from the CAIDA PeeringDB 
 [RIPE Atlas](https://atlas.ripe.net/) supplies the published traces. [CAIDA’s PeeringDB archive](https://www.caida.org/catalog/datasets/peeringdb/) supplies the matching day’s exchange directory. The application links the exact time interval, source probe and measurement for every group. Only grouped counts and exchange names are bundled. No probes are commissioned.
 
 A daily workflow adds a sample from two days earlier, validates the source results, runs browser checks and preserves earlier editions. `python scripts/refresh.py --date YYYY-MM-DD` collects a past sample. `node --test tests/*.test.mjs`, `python -m unittest discover -s tests` and `python scripts/build.py` check and build the site offline.
+
+## Archive citation
+
+The CAIDA UCSD PeeringDB Dataset, 2026-10-04 to 2026-11-18 (launch editions). The application updates this date range as it gains samples. [Dataset record](https://www.caida.org/catalog/datasets/peeringdb/) · [Public data agreement](https://www.caida.org/about/legal/aua/caida_pub_aua.html) · [Report a publication using CAIDA data](https://www.caida.org/catalog/datasets/publications/report-publication/).

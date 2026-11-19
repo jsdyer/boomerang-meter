@@ -44,6 +44,7 @@ async function start(){state=await data('status');anchors=new Map(state.anchors.
  const choices=[...anchors.keys()].map(id=>[id,label(id)]).sort((a,b)=>a[1].localeCompare(b[1]));
  for(const id of ['source','destination'])options(id,[['','All anchors'],...choices],initial.get(id));
  const kind=initial.get('kind');if([...get('kind').options].some(o=>o.value===kind))get('kind').value=kind;
+ get('archive-credit').replaceChildren('The CAIDA UCSD PeeringDB Dataset, '+state.dates[0]+' to '+state.dates.at(-1)+'. ',link('CAIDA dataset record','https://www.caida.org/catalog/datasets/peeringdb/'));
  get('stamp').textContent=fmt(state.count)+' archived trace observations · '+state.dates.length+' sample dates · '+state.anchors.length+' Canadian anchors in the panel · Retrieved '+state.retrieved;
  for(const id of controls.slice(0,-1))get(id).onchange=()=>render().catch(failure);get('direction').onchange=detail;
  get('export').onclick=()=>csv('boomerang-'+get('date').value,['UTC date','Source anchor','Destination anchor','Source','Destination','Traces','Reached','US match','Canada match','Neither match'],visible.map(g=>[get('date').value,g.from,g.to,label(g.from),label(g.to),g.n,g.reached,g.us,g.ca,g.unmatched]));await render();
