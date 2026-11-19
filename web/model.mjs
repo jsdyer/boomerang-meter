@@ -1,7 +1,5 @@
-// Keep transformations separate from the DOM so they can be tested directly.
-export function cleanLines(text) {
-  if (typeof text !== 'string') throw new TypeError('Expected text');
-  const lines = text.split(/\r\n|\r|\n/).map(line => line.trim()).filter(Boolean);
-  const unique = [...new Set(lines)];
-  return { text: unique.join('\n'), count: unique.length, removed: lines.length - unique.length };
+export function filterGroups(rows,source,destination,kind){
+ return rows.filter(g=>(!source||g.from===Number(source))&&(!destination||g.to===Number(destination))&&(kind==='all'||g[kind]>0));
 }
+export function counts(rows){return rows.reduce((t,g)=>({n:t.n+g.n,reached:t.reached+g.reached,us:t.us+g.us}),{n:0,reached:0,us:0})}
+export function percent(n,d){return d?(100*n/d).toLocaleString('en-CA',{maximumFractionDigits:1})+'%':'—'}

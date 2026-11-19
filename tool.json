@@ -1,16 +1,45 @@
 {
-  "id": "coolcode-tool-template",
-  "title": "CoolCode Tool Starter",
-  "description": "A browser-only example that trims lines and removes exact duplicates.",
-  "category": "security",
-  "tags": ["text", "lines", "duplicates"],
-  "icon": "scan-search",
-  "url": "/coolcode-tool-template/",
-  "source": "https://github.com/jsdyer/coolcode-tool-template",
+  "id": "boomerang-meter",
+  "title": "Boomerang Meter",
+  "description": "Compare Canadian anchor pairs and inspect the exchange evidence on their published internet paths.",
+  "category": "liminal-tools",
+  "tags": [
+    "traceroute",
+    "routing",
+    "RIPE Atlas",
+    "Canada",
+    "internet exchange"
+  ],
+  "icon": "route",
+  "url": "/boomerang-meter/",
+  "source": "https://github.com/jsdyer/boomerang-meter",
   "hosting": "project",
   "access": "browser",
   "data_info": {
-    "mode": "local",
-    "detail": "The browser reads the text you paste and compares its lines."
+    "mode": "snapshot",
+    "detail": "Completed RIPE Atlas traces are compared with same-day PeeringDB exchange member addresses and facility countries.",
+    "cadence": "Weekly",
+    "probes": [
+      {
+        "url": "https://coolcode.ca/boomerang-meter/data/status.json",
+        "path": [
+          "end"
+        ],
+        "label": "Latest sample",
+        "count_at": {
+          "path": [
+            "count"
+          ],
+          "unit": "trace observations"
+        }
+      },
+      {
+        "url": "https://coolcode.ca/boomerang-meter/data/status.json",
+        "path": [
+          "retrieved"
+        ],
+        "label": "Data retrieved"
+      }
+    ]
   }
 }
