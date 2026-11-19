@@ -35,6 +35,7 @@ def main():
                 page.select_option('#destination','7577')
                 page.wait_for_function("document.querySelector('#finding').textContent.includes('8 had US')")
                 assert 'DE-CIX New York' in page.locator('#evidence').inner_text()
+                assert '2026-11-11' in page.locator('#earlier').inner_text()
                 with page.expect_download() as out:
                     page.click('#export')
                 assert out.value.suggested_filename.endswith('.csv')

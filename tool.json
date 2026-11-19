@@ -18,7 +18,7 @@
   "data_info": {
     "mode": "snapshot",
     "detail": "Completed RIPE Atlas traces are compared with same-day PeeringDB exchange member addresses and facility countries.",
-    "cadence": "Weekly",
+    "cadence": "Daily",
     "probes": [
       {
         "url": "https://coolcode.ca/boomerang-meter/data/status.json",

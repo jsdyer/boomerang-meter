@@ -2,7 +2,7 @@
 
 [Compare Canadian anchor directions](https://coolcode.ca/boomerang-meter/)
 
-Explore completed, public IPv4 traceroutes between Canadian RIPE Atlas anchors during a fixed two-hour UTC window. Filter by source, destination and exchange evidence, then inspect one direction’s count, denominator and original measurements. Export the selected groups to CSV. Each filter and direction is shareable.
+Explore completed, public IPv4 traceroutes between Canadian RIPE Atlas anchors during a fixed two-hour UTC window. Filter by source, destination and exchange evidence, then inspect one direction’s count, denominator and original measurements. Export the selected groups to CSV. The detail compares the same direction with the preceding stored sample and links directly to that date. Each filter and direction is shareable.
 
 <!-- coolcode:guide -->
 On November 18, 2026 all eight completed traces from Beauharnois AS16276 to Vancouver AS396993 matched a DE-CIX New York member interface. The eight reverse traces reached Beauharnois with no exchange match. Compare the directions and open their original Atlas results.
@@ -16,4 +16,4 @@ On the same date the collector builds an address index from the CAIDA PeeringDB 
 
 [RIPE Atlas](https://atlas.ripe.net/) supplies the published traces. [CAIDA’s PeeringDB archive](https://www.caida.org/catalog/datasets/peeringdb/) supplies the matching day’s exchange directory. The application links the exact time interval, source probe and measurement for every group. Only grouped counts and exchange names are bundled. No probes are commissioned.
 
-A weekly workflow adds a sample from two days earlier, validates the source results, runs browser checks and preserves earlier editions. `python scripts/refresh.py --date YYYY-MM-DD` collects a past sample. `node --test tests/*.test.mjs`, `python -m unittest discover -s tests` and `python scripts/build.py` check and build the site offline.
+A daily workflow adds a sample from two days earlier, validates the source results, runs browser checks and preserves earlier editions. `python scripts/refresh.py --date YYYY-MM-DD` collects a past sample. `node --test tests/*.test.mjs`, `python -m unittest discover -s tests` and `python scripts/build.py` check and build the site offline.

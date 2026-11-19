@@ -4,9 +4,11 @@ const controls=['date','source','destination','kind','direction'];
 let state,anchors,observations,visible=[],previousDirection=initial.get('direction')||'',sequence=0;
 const key=g=>g.from+'-'+g.to;
 const label=id=>{const a=anchors.get(id);return a.city+' · AS'+a.network};
+async function loadDate(day){if(!observations.has(day))observations.set(day,await data(day));return observations.get(day)}
 async function render(){
  const version=++sequence,day=get('date').value;
- if(!observations.has(day))observations.set(day,await data(day));
+ const previous=state.dates[state.dates.indexOf(day)-1];
+ await Promise.all([loadDate(day),...(previous?[loadDate(previous)]:[])]);
  if(version!==sequence)return;
  const edition=observations.get(day),groups=filterGroups(edition.groups,get('source').value,get('destination').value,get('kind').value);
  visible=[...groups].sort((a,b)=>(b.us/Math.max(1,b.reached))-(a.us/Math.max(1,a.reached))||label(a.from).localeCompare(label(b.from))||label(a.to).localeCompare(label(b.to)));
@@ -23,6 +25,15 @@ function detail(){
  const day=get('date').value,edition=observations.get(day);
  get('finding').textContent=g?g.reached+' of '+g.n+' traces reached the destination. '+g.us+' had US exchange evidence, '+g.ca+' had Canadian exchange evidence, and '+g.unmatched+' had neither. Each bar counts reached traces matching that exchange.':'No directional sample matches these filters.';
  barlist('evidence',g?Object.entries(g.evidence).sort((a,b)=>b[1]-a[1]):[]);
+ const previous=state.dates[state.dates.indexOf(day)-1];
+ const baseline=g&&previous?observations.get(previous)?.groups.find(r=>key(r)===key(g)):null;
+ const earlier=get('earlier');earlier.replaceChildren();
+ if(baseline){
+  earlier.append('Earlier sample ('+previous+'): '+baseline.us+' of '+baseline.reached+' reached traces had US exchange evidence. ');
+  if(baseline.reached&&g.reached&&g.us&&!baseline.us)earlier.append('US exchange evidence first appears between these two samples. ');
+  const q=new URLSearchParams(location.search);q.set('date',previous);q.set('kind','all');q.set('direction',key(g));
+  earlier.append(link('Open that sample','?'+q));
+ }else if(g)earlier.textContent=previous?'This direction has no observation in the preceding sample.':'This is the earliest stored sample.';
  get('sources').replaceChildren(link('Same-day PeeringDB snapshot',edition.source));
  if(g){const a=anchors.get(g.to),start=Date.parse(day+'T18:00:00Z')/1000;
  const url='https://atlas.ripe.net/api/v2/measurements/'+a.measurement+'/results/?start='+start+'&stop='+(start+7199)+'&probe_ids='+g.from;
