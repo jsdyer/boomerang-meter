@@ -50,7 +50,23 @@ jobs:
       - name: Install browser test dependencies
         run: |
           python3 -m pip install -r tests/browser-requirements.txt
-          python3 -m playwright install --with-deps chromium
+          python3 -m playwright install --only-shell chromium
+          python3 - <<'PYTHON'
+          import subprocess
+          import sys
+          from playwright.sync_api import Error, sync_playwright
+
+          with sync_playwright() as playwright:
+              try:
+                  playwright.chromium.launch().close()
+              except Error as error:
+                  message = str(error).lower()
+                  if not any(note in message for note in (
+                      "host system is missing dependencies", "error while loading shared libraries",
+                  )):
+                      raise
+                  subprocess.run([sys.executable, "-m", "playwright", "install-deps", "chromium"], check=True)
+          PYTHON
       - name: Check application in a browser
         run: python3 tests/browser_smoke.py
       - name: Save the tested edition
